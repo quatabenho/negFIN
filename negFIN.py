@@ -341,9 +341,9 @@ class NegFIN:
 
 
 if __name__ == '__main__':
-    datasetFile1 = './data/chess.dat'  # 'test.dat'; #The database
-    datasetFile2 = './data/mushroom.dat'
-    outputFile1 = 'outputNegFIN.txt'  # The path for saving the frequent itemsets found.
+    datasetFile1 = 'data/chess.dat'  # 'test.dat'; #The database
+    datasetFile2 = 'data/mushroom.dat'
+    outputFile1 = 'Results/outputNegFIN.txt'  # The path for saving the frequent itemsets found.
     delimiter1 = ' '
     minSupport1 = 0.50;  # Means the minimum support. We uses a relative count.
 
