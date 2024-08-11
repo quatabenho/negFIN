@@ -1,0 +1,37 @@
+Algorithm 2: Set-enumeration tree construction
+
+Input : The zero-based vector L1 ( Definition 2 ). 
+Output : A set-enumeration tree ( Definition 11 ). 
+
+Create the node root ; 
+root.level = 0; // The root is at level 0; 
+root.children−list = ∅ ; 
+root.item−name = ∅ ; 
+root.itemset = ∅ ; 
+
+for each item i ∈ L 1 do : 
+    Create the node child i ; 
+    child i.level = root.level + 1; 
+    child i.item −name = i ; 
+        child i.itemset = { i }; 
+
+    Append child i into root.children −list ; 
+    call constructing_set_enumeration_tree ( child i );  
+end for 
+return root ; 
+
+procedure constructing_set_enumeration_tree ( N ) 
+    P = N.itemset ; 
+    N.children−list = ∅ ; 
+
+    for each item i ∈ L 1 ∧ i N.item−name do :  
+        R = P  { i } 
+        Create the node child i ; 
+        child i.level = N.level + 1; 
+        child i.item−name = i ; 
+        child i.itemset = R ; 
+        Append child i into N.children −list ; 
+        call constructing_set_enumeration_tree ( child i ); 
+    end for 
+
+end procedure 

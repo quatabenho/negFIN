@@ -1,0 +1,73 @@
+Algorithm 4: (Procedure constructing_frequent_itemset_tree). 
+
+procedure constructing_frequent_itemset_tree ( N, FIS parent ) 
+
+P = N.itemset ; 
+N.children −list = ∅ ; 
+N.equi v alent _ items = ∅ ; 
+
+for each item i ∈ L 1 ∧ i N.item −name do : 
+    R = iP ; // R = P ∪ { i } 
+    R.NegNodeset = ∅ ; 
+    
+    if N.level = 1 then : 
+    //Second step 
+        for each N-info ni ∈ Nodeset ( P ) do : 
+        //Checks whether the bit assigned to the item i in ni.bitmap −code is 0? ( Definition 10 ) 
+            
+            if ni.bitmap −code ∧ 2 index ( i ) = 0 then : 
+                R.NegNodeset = R.NegNodeset ∪ { ni } ; 
+            end if 
+
+        end for 
+    else 
+    //Third step 
+    jX = P ; // j is the leftmost item in P and X is the remaining itemset. 
+    Hence, R = ijX 
+
+    Q = iX ; //Replace the first item in P with the item i ( i j ). 
+    
+    for each N-info ni ∈ NegNodeset ( Q ) do : 
+    //Checks whether the bit assigned to the item j in ni.bitmap −code is 1? ( Property 7 ) 
+        
+        if ni.bitmap −code ∧ 2 index ( j ) = 1 then : 
+            R.NegNodeset = R.NegNodeset ∪ { ni } ; 
+        end if 
+        end for 
+    end if 
+
+    R  .suppor t =  
+    ni ∈ N egN odeset(R ) 
+    ni.count;// Property 6 
+    R.support = P.support−R.support ;
+
+    if R.support = P.support then : 
+        N.equivalent_items = N.equivalent_items ∪ { i } ; 
+    else 
+        if R.support ≥ | DB | ×min −support then : 
+            Create the node child i ; 
+            child i .level = N.level + 1; 
+            child i .item −name = i ; 
+            child i .itemset = R ; 
+            Append child i into N.children −list ; 
+        end if 
+    end if 
+end for 
+SS = the set of all subsets of N.equi v alent _ items ; 
+PSet ← { A | A = { N.item −name } ∪ ´ A , ´ A ∈ SS} ; 
+
+if FIS parent = ∅ then : 
+    FIS N = PSet ; 
+else 
+    FISN = { P  | P  = P 1 ∪ P 2 , P 1 ∈ PSet ∧ P 2 ∈ F I S parent } ; 
+end if 
+
+F = F ∪ F I S N ; 
+    if N.children −list  = ∅ then : 
+        for each child i ∈ N.children −list do : 
+            call constructing_frequent_itemset_tree ( child i , FIS N ); //Algorithm 4 
+        end for 
+    else  
+        return; 
+    end if 
+end procedure 

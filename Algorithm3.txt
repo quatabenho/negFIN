@@ -1,0 +1,31 @@
+Algorithm 3 : negFIN Algorithm
+
+Input : A transactional database DB and a threshold min −support . 
+Output : The set of all frequent itemsets, F . 
+
+F = ∅ ; 
+//First step 
+call constructing_BMC_tree ( DB, min −support )( Algorithm 1 ) to construct the 
+    BMC-tree and find L1 ( Definition 2 ); 
+F = F ∪ L 1 ; 
+for each node N in the BMC-tree do : //Traverse the BMC-tree in an arbitrary order. 
+    Append the N −info of N into the Nodeset of item N.item −name ; 
+end for 
+
+Create the node root ; 
+
+root.level = 0; // The root is at level 0; 
+root.children −list = ∅ 
+    root.item −name = ∅ ; 
+    root.itemset = ∅ ; 
+
+for each item i ∈ L 1 do : 
+    Create the node child i ; 
+    child i .level = root.level + 1; 
+    child i .item −name = i ; 
+    child i .itemset = { i }; 
+    Append child i into root.children −list ; 
+    call constructing_frequent_itemset_tree ( child i , ∅ ); 
+end for 
+
+return root ;

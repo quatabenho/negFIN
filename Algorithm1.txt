@@ -1,0 +1,35 @@
+Algorithm 1: constructing_BMC_tree
+Input : A transactional database DB , and a threshold min −support . 
+Output : A BMC-tree ( Definition 6 ), and L 1 ( Definition 2 ).
+
+Scan DB to find F1;
+L1 = Sort the items of F1 in non-descending order, with respect to support(α), where α is an item. 
+Create Tr as the root of a BMC-tree, and do the following assignments:
+Tr.item - name = ∅;
+Tr.count = 0;
+Tr.bitmap −code = b nf −1 , …, b 1 , b 0 , where b i = 0, and 0 ≤ i ≤ nf −1; 
+
+For each transaction T in DB do : 
+    Remove all infrequent items from T. 
+    Sort T according to the order of items in L1_reverse (reverse order of L1 ). 
+
+    //Insert T into BMC-tree 
+    current−root = Tr; 
+
+    For each item i in T do : 
+        Let N be a child of current −root , in such a way that N.item−name = i; 
+        
+        If such node does not exist then : 
+            Create the new node N ; 
+            N.item−name = i ; 
+            N.count = 0; 
+            Add N to current −root.children −list ; 
+        Endif 
+
+        N.count = N.count + 1; 
+        N.bitmap −code = current −root.bitmap −code ∨ 2 index ( i ); 
+        current −root = N ; 
+    Endfor 
+
+Endfor 
+Return A BMC-tree Tr , and a zero-based vector L1 ;
