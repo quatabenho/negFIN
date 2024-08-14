@@ -3,8 +3,7 @@ import os
 from datetime import datetime
 from math import ceil
 from bitarray import bitarray
-
-
+from matplotlib import pyplot as plt
 class BMCTreeNode:
     """
     The node in the BMC tree.
@@ -46,7 +45,16 @@ class BMCTreeNode:
     def __repr__(self):
         return f'{self.item}:{self.count}->{self.bitmap_code}'
 
-
+def plot_execution_times(dataset_names, execution_times):
+    plt.figure(figsize=(10, 6))
+    plt.bar(dataset_names, execution_times, color='skyblue')
+    plt.xlabel('Dataset')
+    plt.ylabel('Execution Time (ms)')
+    plt.title('Execution Time Comparison for NegFIN Algorithm')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
+    
 class FrequentItemsetTreeNode:
     def __init__(self):
         self.item = None
@@ -339,16 +347,43 @@ class NegFIN:
 # run_negfin_on_all_files(data_folder, output_folder, min_support)
 
 
+def run_negfin_on_multiple_datasets(dataset_files, min_support, output_folder, delimiter=' '):
+    execution_times = []
+    dataset_names = []
+
+    for dataset_file in dataset_files:
+        output_file = os.path.join(output_folder, f'output_{os.path.basename(dataset_file)}.dat')
+        print(f'Running NegFIN on {dataset_file}...')
+
+        algorithm = NegFIN(dataset_file, min_support, output_file, delimiter)
+        algorithm.runAlgorithm()
+        algorithm.printStats()
+
+        execution_times.append(algorithm.execution_time)
+        dataset_names.append(os.path.basename(dataset_file))
+
+    return dataset_names, execution_times
 
 if __name__ == '__main__':
-    datasetFile1 = 'data/chess.dat'  # 'test.dat'; #The database
-    datasetFile2 = 'data/mushroom.dat'
-    outputFile1 = 'Results/outputNegFIN.txt'  # The path for saving the frequent itemsets found.
-    delimiter1 = ' '
-    minSupport1 = 0.50;  # Means the minimum support. We uses a relative count.
+    # datasetFile1 = 'data/chess.dat'  # 'test.dat'; #The database
+    # datasetFile2 = 'data/mushroom.dat'
+    # outputFile1 = 'Results/outputNegFIN.txt'  # The path for saving the frequent itemsets found.
+    # delimiter1 = ' '
+    # minSupport1 = 0.50;  # Means the minimum support. We uses a relative count.
 
-    # Applying the algorithm
-    algorithm = NegFIN(datasetFile1, minSupport1, outputFile1, delimiter1)
-    algorithm.runAlgorithm()
-    algorithm.printStats()
+    # # Applying the algorithm
+    # algorithm = NegFIN(datasetFile1, minSupport1, outputFile1, delimiter1)
+    # algorithm.runAlgorithm()
+    # algorithm.printStats()
 
+    dataset_files = ['data/chess.dat', 'data/mushroom.dat', 'data/pumsb_star.dat', 'data/vote.dat']
+    output_folder = 'Results'
+    min_support = 0.50
+    delimiter = ' '
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Run NegFIN on multiple datasets
+    dataset_names, execution_times = run_negfin_on_multiple_datasets(dataset_files, min_support, output_folder, delimiter)
+
+    # Plot the execution times
+    plot_execution_times(dataset_names, execution_times)
