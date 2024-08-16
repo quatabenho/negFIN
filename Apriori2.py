@@ -13,7 +13,7 @@ minsup = float(input("Enter Support-Threshold: "))
 minconf = float(input("Enter Confidence-Threshold: "))
 
 # Read data from .dat file
-file_path = 'data/chess.dat'  # Modify this to the correct path of your .dat file
+file_path = 'data/test.dat'  # Modify this to the correct path of your .dat file
 items = read_dat_file(file_path)
 
 # Adjust minsup to actual count

@@ -371,6 +371,7 @@ class NegFIN:
 
 def run_negfin_on_multiple_datasets(dataset_files, min_support, output_folder, delimiter=' '):
     execution_times = []
+    num_frequent_itemsets_list = []
     dataset_names = []
 
     for dataset_file in dataset_files:
@@ -382,13 +383,12 @@ def run_negfin_on_multiple_datasets(dataset_files, min_support, output_folder, d
         algorithm.printStats()
 
         execution_times.append(algorithm.execution_time)
+        num_frequent_itemsets_list.append(algorithm.num_of_frequent_itemsets)
         dataset_names.append(os.path.basename(dataset_file))
 
-    return dataset_names, execution_times
+    return dataset_names, execution_times, num_frequent_itemsets_list
 
 if __name__ == '__main__':
-
-
     dataset_files = ['data/chess.dat', 'data/mushroom.dat', 'data/pumsb_star.dat', 'data/vote.dat','data/zoo-1.dat','data/hepatitis.dat']
     output_folder = 'Results'
     min_support = 0.50
@@ -396,11 +396,13 @@ if __name__ == '__main__':
     os.makedirs(output_folder, exist_ok=True)
 
     # Run NegFIN on multiple datasets
-    dataset_names, execution_times = run_negfin_on_multiple_datasets(dataset_files, min_support, output_folder, delimiter)
+    dataset_names, execution_times, num_frequent_itemsets = run_negfin_on_multiple_datasets(dataset_files, min_support, output_folder, delimiter)
     
     # Plot the execution times
     plot_execution_times(dataset_names, execution_times)
-    plot_itemsets_vs_support(min_support, self.num_frequent_itemsets, dataset_name)
+
+    # Plot the number of frequent itemsets
     plot_num_frequent_itemsets(dataset_names, num_frequent_itemsets)
+
+    # Combined plot
     combined_plot(dataset_names, execution_times, num_frequent_itemsets)
-    
